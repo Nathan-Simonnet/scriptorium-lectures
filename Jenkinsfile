@@ -2,31 +2,22 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Hello') {
+        stage('Checkout') {
             steps {
-                echo 'Jenkins fonctionne'
-                sh 'pwd'
-                sh 'ls -la'
+                checkout scm
             }
         }
 
-        // stage('Checkout') {
-        //     steps {
-        //         checkout scm
-        //     }
-        // }
-
-        // stage('Test') {
-        //     steps {
-        //         sh 'echo "Tests à définir"'
-        //     }
-        // }
-
-        // stage('Build') {
-        //     steps {
-        //         sh 'echo "Build à définir"'
-        //     }
-        // }
+        stage('Verify environment') {
+            steps {
+                sh 'whoami'
+                sh 'pwd'
+                sh 'docker -v'
+                sh 'docker compose version'
+                sh 'node -v || true'
+                sh 'yarn -v || true'
+                sh 'ls -la'
+            }
+        }
     }
 }
