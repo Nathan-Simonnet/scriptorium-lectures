@@ -3,6 +3,8 @@ pipeline {
 
     options {
         skipDefaultCheckout()
+        timestamps()
+        disableConcurrentBuilds()
     }
 
     stages {
@@ -19,10 +21,19 @@ pipeline {
                 sh 'git --version'
                 sh 'docker -v'
                 sh 'docker compose version'
-                sh 'docker ps'
-                sh 'node -v || true'
-                sh 'yarn -v || true'
                 sh 'ls -la'
+            }
+        }
+
+        stage('Validate compose') {
+            steps {
+                sh 'docker compose config'
+            }
+        }
+
+        stage('Build containers') {
+            steps {
+                sh 'docker compose build'
             }
         }
     }
