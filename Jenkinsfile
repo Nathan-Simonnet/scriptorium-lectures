@@ -77,7 +77,14 @@ pipeline {
             }
         }
     }
-
+        stage('Smoke test') {
+            steps {
+                sh '''
+                    curl -f https://scriptorium-lectures.fr
+                    curl -f https://api.scriptorium-lectures.fr/api/health
+                '''
+            }
+        }
     post {
         success {
             echo 'Déploiement terminé avec succès'
