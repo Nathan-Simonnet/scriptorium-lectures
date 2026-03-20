@@ -76,7 +76,7 @@ pipeline {
                 '''
             }
         }
-    }
+
         stage('Smoke test') {
             steps {
                 sh '''
@@ -85,6 +85,8 @@ pipeline {
                 '''
             }
         }
+    }
+
     post {
         success {
             echo 'Déploiement terminé avec succès'
