@@ -50,4 +50,10 @@ app.use("/api/books", bookRoutes);
 import userRoutes from "./routes/userRoutes.js";
 app.use("/api/user", userRoutes);
 
+// Health check
+// ==================================
+app.get('/api/health', (_req, res) => {
+  res.status(200).json({ ok: true })
+})
+
 export default app;
