@@ -21,20 +21,24 @@ pipeline {
 
         stage('Verify environment') {
             steps {
-                sh 'whoami'
-                sh 'pwd'
-                sh 'git --version'
-                sh 'docker -v'
-                sh 'docker compose version'
-                sh 'ls -la'
+                sh '''
+                    whoami
+                    pwd
+                    git --version
+                    docker -v
+                    docker compose version
+                    ls -la
+                '''
             }
         }
 
         stage('Prepare deploy directory') {
             steps {
                 sh '''
-                    mkdir -p "$DEPLOY_DIR"
+                    test -d "$DEPLOY_DIR"
                     test -f "$ENV_FILE"
+                    ls -ld /opt/apps
+                    ls -ld "$DEPLOY_DIR"
                 '''
             }
         }
@@ -45,8 +49,9 @@ pipeline {
                     rm -rf "$DEPLOY_DIR/backend" "$DEPLOY_DIR/frontend" "$DEPLOY_DIR/public"
                     cp -r backend "$DEPLOY_DIR/"
                     cp -r frontend "$DEPLOY_DIR/"
-                    cp -r public "$DEPLOY_DIR/" || true
+                    if [ -d public ]; then cp -r public "$DEPLOY_DIR/"; fi
                     cp docker-compose.yml "$DEPLOY_DIR/"
+                    ls -la "$DEPLOY_DIR"
                 '''
             }
         }
