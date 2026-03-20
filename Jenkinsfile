@@ -35,10 +35,13 @@ pipeline {
         stage('Prepare deploy directory') {
             steps {
                 sh '''
+                    echo "Checking deploy directory..."
+                    ls -ld /opt/apps || true
+                    ls -ld "$DEPLOY_DIR" || true
+                    ls -l "$ENV_FILE" || true
+
                     test -d "$DEPLOY_DIR"
                     test -f "$ENV_FILE"
-                    ls -ld /opt/apps
-                    ls -ld "$DEPLOY_DIR"
                 '''
             }
         }
